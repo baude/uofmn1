@@ -1,0 +1,12 @@
+# The FROM directive signifies which container image the build should
+# start with.  `SCRATCH` is also valid and means start from nothing.
+FROM docker.io/library/nginx:latest
+
+# The COPY directive takes local files from the context directory and
+# adds it to the new container image you are building.  Here we copy
+# an HTML file into the root directory of the where ngnix serves from.
+COPY index.html /usr/share/nginx/html/
+
+# The RUN directive executes commands inside the build container and ends
+# up being inside the image.  Here we add `vim` to the container image.
+RUN apt-get update && apt-get install vim && apt-cache clean all
