@@ -9,4 +9,4 @@ COPY index.html /usr/share/nginx/html/
 
 # The RUN directive executes commands inside the build container and ends
 # up being inside the image.  Here we add `vim` to the container image.
-RUN apt-get update && apt-get install vim && apt-cache clean all
+RUN apt-get update && apt-get -y install vim && apt-get autoclean

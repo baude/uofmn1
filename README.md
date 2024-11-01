@@ -4,40 +4,67 @@ All of these activities will be run rootless (unprivileged) with Podman. This ac
 
 * podman
 * curl
+* jq
 
 ## Simple nginx (httpd) container
 
 Run an ngnix container with a random port assignment.  The port must be greater than 1024
 
 ```console
-$ podman run -dt -p <RANDOM_PORT:80> docker.io/library/nginx:latest
+$ podman run -dt -p RANDOM_PORT:80 docker.io/library/nginx:latest
 ```
 
 Note the ID returned by the command.
 
 Use curl to verify the running nginx instance
 ```console
-$ curl http://localhost:<RANDOM_PORT>
+$ curl http://localhost:RANDOM_PORT
 ```
 You should see a basic nginx response (raw HTML)
+
+
+## Inspect a container image
+
+You can inspect all types of container components.  Among others, these are the basic ones:
+* images
+* containers
+* networks
+
+Inspecting a container image can reveal:
+* CPU architecture (Architecture)
+* operating system (OS)
+* default command if one exists (cmd)
+
+```console
+$ podman inspect docker.io/library/nginx:latest
+```
+
+Explore the inspection data.  Ask questions!
 
 ## Monitor running container
 
 The `podman ps` commands describes the containers you have run.  If run just as `podman ps`, you will see a list
 of running containers.  To see running and stopped containers, run `podman ps -a`.
 
+```console
+$ podman ps
+```
+
 Run another container that will simply execute a command and exit.
 
 ```console
-$ podman run -it docker.io/library/alpine:latest true`
+$ podman run -it docker.io/library/alpine:latest true
 ```
 
 Note: the `-it` switch means run this container with an interactive (i) terminal (t). Try running without the `-it`.
 
-After the container runs, we should see a bigger different in `podman ps` and `podman ps -a`.  Try it.
+After the container runs, we should see a bigger different in `podman ps` and `podman ps -a`.
 
-In the output from `podman ps`, notice is shows the command the container is running or ran.  If a container does not have a process,
-it will exit.
+```console
+$ podman ps -a
+```
+
+In the output from `podman ps -a`, notice is shows the command the container is running or ran.  If a container does not have a process, it will exit.
 
 ## Checkout the nginx process that are running
 
@@ -60,8 +87,22 @@ $ podman inspect <CONTAINER_HASH>
 
 Look throught the output and examine what is reported. Look at the *State* and *Network* outputs.  Ask questions about what things are.
 
+If you want to see only the *State* of containers, you can add a format directive.
 
-## "Pop" into a container
+```console
+$ podman inspect --format "{{.State}}" <CONTAINER_HASH>
+```
+
+Notice how the formatting is plain text.  The intent is usually for machine parsing and not human readibility.  A tool called `jq` can help.
+
+```console
+$ podman inspect <CONTAINER_HASH> | jq .[0].State
+```
+
+This shows the first inspected container's *State* stanza.
+
+
+## "Pop"(exec) into a container
 
 You can execute a command in a running using `podman exec`.  Much like `podman run`, passing `-it` gives you an interactive terminal.
 
@@ -90,9 +131,10 @@ You know have a shell "in" the container. Try running the command `whoami`?  Is 
 ```console
 root@<HASH>:/# apt-get update && apt-get install -y procps
 root@<HASH>:/# ps -u
+root@<HASH>:/# exit
 ```
 
-Is this what you expected?  Why are processes from the system listed here?
+Is this what you expected?  Why are processes from the system not listed here?
 
 
 ## Stop all of your containers
@@ -131,7 +173,7 @@ switch as it is assumed
 
 ### Run the new image
 
-Now that the imiage build is complete, we can run the new image.  Here `:latest` is added for completeness.
+Now that the image build is complete, we can run the new image.  Here the `:latest` tag is added for completeness.
 
 ```console
 $ podman run -dt -p <RANDOM_PORT:80> localhost/mynginx:latest
@@ -139,10 +181,26 @@ $ podman run -dt -p <RANDOM_PORT:80> localhost/mynginx:latest
 
 ### Verify your index is in the image
 
-To verify our image contains the custom index file we made, we can use curl:
+To verify our image contains the custom nginx index file we made, we can use curl:
 
 ```console
 $ curl http://localhost:<RANDOM_PORT>
 ```
 
-You should see your custom index file.
+You should see your custom file.
+
+### Clean up
+ 
+ To clean up container related content, simply issue:
+
+```console
+$ podman rmi -fa
+```
+
+
+## Challenge
+
+1. Using the stock nginx container image (docker.io/library/nginx:latest), run a container that mounts (-v) 
+ your custom index.html into the container.  Prove by curl'ing the container and seeing your file.
+
+1. If `podman run -it --rm docker.io/library/python:latest python -V` shows version 3.13 or 3.14, how could you use a container to test something with Python-3.10?  Prove with `python -V`
