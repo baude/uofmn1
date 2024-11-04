@@ -198,9 +198,35 @@ $ podman rmi -fa
 ```
 
 
-## Challenge
+## Challenges
 
-1. Using the stock nginx container image (docker.io/library/nginx:latest), run a container that mounts (-v) 
- your custom index.html into the container.  Prove by curl'ing the container and seeing your file.
+Try these challenges and partner up to find solutions as needed.
 
 1. If `podman run -it --rm docker.io/library/python:latest python -V` shows version 3.13 or 3.14, how could you use a container to test something with Python-3.10?  Prove with `python -V`
+
+1. Using the stock nginx container image (docker.io/library/nginx:latest), run a container that mounts (hint: -v) 
+ your custom index.html into the container.  Prove by curl'ing the container and seeing your file.
+
+1. Using the provided content in the directory `hello` to generate an image that will output the asciiart below.
+
+```
+!... Hello Podman World ...!
+
+         .--"--.           
+       / -     - \         
+      / (O)   (O) \        
+   ~~~| -=(,Y,)=- |         
+    .---. /`  \   |~~      
+ ~/  o  o \~~~~.----. ~~   
+  | =(X)= |~  / (O (O) \   
+   ~~~~~~~  ~| =(Y_)=-  |   
+  ~~~~    ~~~|   U      |~~ 
+
+Project:   https://github.com/containers/podman
+Website:   https://podman.io
+Desktop:   https://podman-desktop.io
+Documents: https://docs.podman.io
+YouTube:   https://youtube.com/@Podman
+X/Twitter: @Podman_io
+Mastodon:  @Podman_io@fosstodon.org
+```

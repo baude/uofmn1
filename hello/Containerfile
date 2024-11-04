@@ -1,0 +1,14 @@
+# Build command primitives reference: https://docs.docker.com/reference/dockerfile/
+FROM docker.io/library/alpine as builder
+ADD podman_hello_world.c .
+RUN apk update && apk add musl-dev && gcc -O2 -static -o podman_hello_world podman_hello_world.c && strip podman_hello_world
+
+
+FROM docker.io/library/alpine:latest
+RUN apk update && apk add bash && apk cache clean
+#LABEL maintainer="Podman Maintainers"
+#LABEL artist="Máirín Ní Ḋuḃṫaiġ, X/Twitter:@mairin"
+#LABEL io.containers.capabilities="sys_chroot"
+COPY --from=builder podman_hello_world /usr/local/bin/podman_hello_world
+ENTRYPOINT /bin
+CMD ["/usr/local/bin/podman_hello"]
