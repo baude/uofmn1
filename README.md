@@ -208,7 +208,7 @@ Try these challenges and partner up to find solutions as needed.
  your custom index.html into the container.  Prove by curl'ing the container and seeing your file. (hint: man podman-run)
 
 1. Using the provided content in the directory `hello` to generate an image that will output the asciiart below.
-Hint: Containerfile/Dockerfile [primative verbs]([https://docs.docker.com/build/concepts/dockerfile/)
+Hint: Containerfile/Dockerfile [primative verbs](https://docs.docker.com/build/concepts/dockerfile/)
 
 ```
 !... Hello Podman World ...!
