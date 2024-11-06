@@ -205,9 +205,10 @@ Try these challenges and partner up to find solutions as needed.
 1. If `podman run -it --rm docker.io/library/python:latest python -V` shows version 3.13 or 3.14, how could you use a container to test something with Python-3.10?  Prove with `python -V`
 
 1. Using the stock nginx container image (docker.io/library/nginx:latest), run a container that mounts (hint: -v) 
- your custom index.html into the container.  Prove by curl'ing the container and seeing your file.
+ your custom index.html into the container.  Prove by curl'ing the container and seeing your file. (hint: man podman-run)
 
 1. Using the provided content in the directory `hello` to generate an image that will output the asciiart below.
+Hint: Containerfile/Dockerfile [primative verbs]([https://docs.docker.com/build/concepts/dockerfile/)
 
 ```
 !... Hello Podman World ...!
