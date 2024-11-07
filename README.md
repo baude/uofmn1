@@ -123,7 +123,7 @@ Is this what you expected? Ask questions.
 The *exec* command can also be something like `/bin/bash` (or `/bin/sh`).  Let's explore this.
 
 ```console
-$ podman exec -it /bin/bash
+$ podman exec -it <CONTAINER_HASH> /bin/bash
 ```
 
 You know have a shell "in" the container. Try running the command `whoami`?  Is the output what you expected?  Only root can install packages.  Will this work?
